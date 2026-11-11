@@ -10,12 +10,18 @@ export interface MapMarker { at: LatLon; kind: "from" | "to" | "safe" | "pin" | 
 export interface MapLine { coords: LatLon[]; tone: "route" | "safe" | "old" }
 
 const GHANA: L.LatLngBoundsExpression = [[4.6, -3.3], [11.2, 1.3]];
-const TILES = {
-  dark: { url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-    attr: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>' },
-  street: { url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    attr: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' },
-};
+const OSM_ATTR = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const CARTO_ATTR = OSM_ATTR + ' &copy; <a href="https://carto.com/attributions">CARTO</a>';
+// CARTO basemaps need a (free) key; the server passes it via /api/geo/info.
+// Without a key, "dark" falls back to OpenStreetMap tiles darkened with a CSS filter.
+let cartoKey: Promise<string | null> | null = null;
+const getCartoKey = () =>
+  (cartoKey ??= fetch("/api/geo/info").then((r) => r.json()).then((i) => i.cartoKey ?? null).catch(() => null));
+function tileConfig(theme: "dark" | "street", key: string | null) {
+  if (theme === "dark" && key)
+    return { url: `https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png?key=${encodeURIComponent(key)}`, attr: CARTO_ATTR, filter: false };
+  return { url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attr: OSM_ATTR, filter: theme === "dark" };
+}
 const COLORS = { route: "#f5a524", safe: "#22c55e", old: "#8b949e", high: "#ef4444", medium: "#f97316", low: "#facc15" };
 
 // Offline base map: our own Ghana road graph drawn on a canvas (no internet needed).
@@ -98,14 +104,17 @@ export default function GhanaLeaflet({ geo, markers, lines, onPick, picking, fit
         grp.on("remove", () => { m.off("zoomend", sync); cities.remove(); towns.remove(); });
       });
     } else {
-      const t = TILES[theme];
-      let errors = 0;
-      tiles.current = L.tileLayer(t.url, { attribution: t.attr, maxZoom: 19, subdomains: "abc" })
-        .on("tileerror", () => { if (++errors === 6) failRef.current?.(); })
-        .addTo(m);
-      tiles.current.bringToBack();
+      getCartoKey().then((key) => {
+        if (cancelled) return;
+        const t = tileConfig(theme, key);
+        let errors = 0;
+        tiles.current = L.tileLayer(t.url, { attribution: t.attr, maxZoom: 19, className: t.filter ? "tiles-darkened" : "" })
+          .on("tileerror", () => { if (++errors === 6) failRef.current?.(); })
+          .addTo(m);
+        tiles.current.bringToBack();
+      });
     }
-    return () => { cancelled = true; };
+    return () => { cancelled = true; tiles.current?.remove(); };
   }, [theme]);
 
   // flood zones + closed roads (from live state)

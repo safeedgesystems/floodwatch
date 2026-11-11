@@ -29,11 +29,29 @@ from .store import Store
 # Configuration (env vars, 12-factor style)
 # --------------------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+def _load_dotenv(path: Path) -> None:
+    """Minimal .env loader (KEY=value lines) so local runs need no extra package.
+    Real environment variables always win over the file."""
+    if not path.exists():
+        return
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            key, _, value = line.partition("=")
+            os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+
+_load_dotenv(BASE_DIR.parent / ".env")      # project-root .env (see .env.example)
 DB_PATH = os.getenv("FLOODWATCH_DB", str(BASE_DIR / "data" / "floodwatch.db"))
 ADMIN_TOKEN = os.getenv("FLOODWATCH_ADMIN_TOKEN", "floodwatch-admin")
 STATIC_DIR = Path(os.getenv("FLOODWATCH_STATIC", str(BASE_DIR / "static")))
 CORS_ORIGINS = [o for o in os.getenv("FLOODWATCH_CORS", "http://localhost:5173").split(",") if o]
 REPORTS_PER_MINUTE = int(os.getenv("FLOODWATCH_RATE_LIMIT", "12"))
+# Browser-side key for CARTO basemap tiles (free at carto.com/basemaps/apikey). It is sent to
+# the browser by design (tile URLs are public); restrict it to your domains in CARTO.
+CARTO_KEY = os.getenv("FLOODWATCH_CARTO_KEY", "").strip()
 
 log = logging.getLogger("floodwatch")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -261,7 +279,7 @@ def _geo():
 
 @app.get("/api/geo/info", tags=["ghana map"])
 def geo_info():
-    return _geo().info()
+    return {**_geo().info(), "cartoKey": CARTO_KEY or None}
 
 
 @app.get("/api/geo/offline-roads", tags=["ghana map"])

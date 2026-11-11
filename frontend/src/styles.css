@@ -545,3 +545,4 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
 .lf-town span { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; font: 600 11px var(--font); color: #c3c9d1; text-shadow: 0 0 3px #121417, 0 0 3px #121417; pointer-events: none; }
 .lf-city span { font-size: 13px; font-weight: 800; color: #f1f3f5; }
 .leaflet-zoom-anim .lf-town { transition: none; }
+.tiles-darkened { filter: invert(1) hue-rotate(180deg) brightness(.85) contrast(.9) saturate(.6); }

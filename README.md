@@ -238,7 +238,7 @@ python tools/build_ghana_graph.py ghana-latest.osm.pbf app/data/ghana_graph.json
 
 ## Configuration
 
-All settings are environment variables and all are optional. Copy `.env.example` to `.env`, then start uvicorn with `--env-file ../.env`. You can also set them in your shell or in Docker.
+All settings are environment variables and all are optional. Copy `.env.example` to `.env` in the project root; the app reads it automatically at start-up. You can also set them in your shell or in Docker.
 
 | Variable | Default | Purpose |
 |---|---|---|
@@ -247,6 +247,7 @@ All settings are environment variables and all are optional. Copy `.env.example`
 | `FLOODWATCH_RATE_LIMIT` | `12` | Report submissions allowed per IP per minute. |
 | `FLOODWATCH_CORS` | `http://localhost:5173` | Comma-separated allowed origins (only needed for the Vite dev server or other front-ends). |
 | `FLOODWATCH_STATIC` | `backend/static` | Folder containing the built frontend. |
+| `FLOODWATCH_CARTO_KEY` | unset | Free CARTO basemap key for the **Dark** map style ([get one](https://carto.com/basemaps/apikey)). Without it, Dark uses OpenStreetMap tiles with a dark filter. Allow `localhost` and your Render domain in the key's website restrictions. |
 | `FLOODWATCH_DISABLE_GEO` | unset | Set to `1` to skip loading the Ghana map (saves about 1 s at start-up and about 150 MB RAM). |
 
 Generate a strong token:

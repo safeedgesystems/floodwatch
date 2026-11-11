@@ -16,3 +16,5 @@ services:
         value: /data/floodwatch.db   # ephemeral on the free plan (resets to demo data on restart)
       - key: FLOODWATCH_RATE_LIMIT
         value: "20"
+      - key: FLOODWATCH_CARTO_KEY
+        sync: false                  # paste your CARTO basemap key in the Render dashboard
