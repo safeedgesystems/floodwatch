@@ -1,0 +1,13 @@
+flowchart TD
+  A([User picks start & destination<br/>GPS · search · tap map]) --> B[Snap both to nearest road junction<br/><b>spatial hash grid</b> in our HashTable]
+  B --> C{Destination inside a<br/>verified flood zone?}
+  C -- Yes --> D[Choose nearest junction<br/>OUTSIDE the zone = safe point]
+  C -- No --> E
+  D --> E[Closed set = road segments within<br/>radius of each verified flood]
+  E --> F[<b>Dijkstra + MinHeap</b><br/>over 45,928 real junctions]
+  F --> G([Draw route, steps, ETA])
+  G --> H{{Live update: admin verifies<br/>a new flood report}}
+  H --> I[Recompute closed set, re-run Dijkstra]
+  I --> J{Route changed?}
+  J -- Yes --> K([Alert user + show new route<br/>and old route dashed])
+  J -- No --> G

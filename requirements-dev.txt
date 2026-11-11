@@ -1,0 +1,6 @@
+# Development & test extras (on top of the runtime set)
+-r requirements.txt
+pytest==9.1.1
+httpx2==2.13.1              # FastAPI TestClient transport
+matplotlib==3.11.2          # charts for bench/benchmark.py
+osmium==4.3.2               # only for tools/build_ghana_graph.py (rebuilding map data)

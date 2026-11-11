@@ -1,0 +1,182 @@
+{
+  "machine": {
+    "python": "3.13.18",
+    "platform": "Linux-6.18.44-fc-v378-x86_64-with-glibc2.39",
+    "processor": "x86_64"
+  },
+  "dijkstra": [
+    {
+      "V": 50,
+      "E": 99,
+      "heap_ms": 0.085,
+      "naive_ms": 0.058,
+      "speedup": 0.7
+    },
+    {
+      "V": 100,
+      "E": 190,
+      "heap_ms": 0.123,
+      "naive_ms": 0.129,
+      "speedup": 1.0
+    },
+    {
+      "V": 250,
+      "E": 462,
+      "heap_ms": 0.408,
+      "naive_ms": 0.7,
+      "speedup": 1.7
+    },
+    {
+      "V": 500,
+      "E": 938,
+      "heap_ms": 0.967,
+      "naive_ms": 2.658,
+      "speedup": 2.7
+    },
+    {
+      "V": 1000,
+      "E": 1873,
+      "heap_ms": 2.314,
+      "naive_ms": 9.969,
+      "speedup": 4.3
+    },
+    {
+      "V": 2000,
+      "E": 3764,
+      "heap_ms": 5.983,
+      "naive_ms": 42.39,
+      "speedup": 7.1
+    },
+    {
+      "V": 5000,
+      "E": 9335,
+      "heap_ms": 15.548,
+      "naive_ms": 522.253,
+      "speedup": 33.6
+    }
+  ],
+  "hash": [
+    {
+      "buckets": 101,
+      "load": 19.8,
+      "sum_probes": 55.5,
+      "sum_used": 28,
+      "sum_longest": 150,
+      "sum_lookup_us": 3.63,
+      "poly_probes": 10.47,
+      "poly_used": 101,
+      "poly_longest": 23,
+      "poly_lookup_us": 1.36,
+      "theory_probes": 10.9
+    },
+    {
+      "buckets": 251,
+      "load": 7.97,
+      "sum_probes": 55.5,
+      "sum_used": 28,
+      "sum_longest": 150,
+      "sum_lookup_us": 2.59,
+      "poly_probes": 4.62,
+      "poly_used": 251,
+      "poly_longest": 11,
+      "poly_lookup_us": 0.89,
+      "theory_probes": 4.98
+    },
+    {
+      "buckets": 503,
+      "load": 3.98,
+      "sum_probes": 55.5,
+      "sum_used": 28,
+      "sum_longest": 150,
+      "sum_lookup_us": 2.98,
+      "poly_probes": 2.56,
+      "poly_used": 503,
+      "poly_longest": 6,
+      "poly_lookup_us": 0.79,
+      "theory_probes": 2.99
+    },
+    {
+      "buckets": 1009,
+      "load": 1.98,
+      "sum_probes": 55.5,
+      "sum_used": 28,
+      "sum_longest": 150,
+      "sum_lookup_us": 2.87,
+      "poly_probes": 1.67,
+      "poly_used": 977,
+      "poly_longest": 4,
+      "poly_lookup_us": 0.68,
+      "theory_probes": 1.99
+    },
+    {
+      "buckets": 2003,
+      "load": 1.0,
+      "sum_probes": 55.5,
+      "sum_used": 28,
+      "sum_longest": 150,
+      "sum_lookup_us": 3.04,
+      "poly_probes": 1.37,
+      "poly_used": 1354,
+      "poly_longest": 4,
+      "poly_lookup_us": 1.07,
+      "theory_probes": 1.5
+    },
+    {
+      "buckets": 4001,
+      "load": 0.5,
+      "sum_probes": 55.5,
+      "sum_used": 28,
+      "sum_longest": 150,
+      "sum_lookup_us": 2.62,
+      "poly_probes": 1.24,
+      "poly_used": 1521,
+      "poly_longest": 2,
+      "poly_lookup_us": 0.61,
+      "theory_probes": 1.25
+    }
+  ],
+  "queue": [
+    {
+      "N": 1000,
+      "linked_ms": 0.27,
+      "list_ms": 0.06
+    },
+    {
+      "N": 10000,
+      "linked_ms": 3.34,
+      "list_ms": 5.48
+    },
+    {
+      "N": 50000,
+      "linked_ms": 17.44,
+      "list_ms": 187.03
+    },
+    {
+      "N": 100000,
+      "linked_ms": 34.04,
+      "list_ms": 746.72
+    }
+  ],
+  "engine": [
+    {
+      "operation": "Route RS\u2192AP (Dijkstra)",
+      "ms": 0.0103
+    },
+    {
+      "operation": "Evacuate from RS (4\u00d7 Dijkstra)",
+      "ms": 0.0567
+    },
+    {
+      "operation": "Hash lookup FL002",
+      "ms": 0.0019
+    },
+    {
+      "operation": "Full state snapshot",
+      "ms": 0.0392
+    },
+    {
+      "operation": "Submit report (hash+queue+SQLite)",
+      "ms": 0.7011
+    }
+  ]
+}

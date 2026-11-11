@@ -1,0 +1,8 @@
+flowchart TD
+  A([User location u]) --> B[For each shelter s:<br/>run Dijkstra u → s on open roads]
+  B --> C[Record distance, ETA = km ÷ 30 km/h × 60,<br/>flooded = active High report at s,<br/>risk score of s]
+  C --> D[Sort shelters by:<br/>1 reachable first<br/>2 not flooded first<br/>3 shortest distance]
+  D --> E{First reachable,<br/>non-flooded shelter?}
+  E -- Yes --> F([Recommend it + draw green route])
+  E -- No, but some reachable --> G([Warn: all reachable shelters flooded — move to high ground])
+  E -- None reachable --> H([Warn: cut off — stay high, call emergency services])

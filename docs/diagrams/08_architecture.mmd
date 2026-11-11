@@ -1,0 +1,17 @@
+flowchart LR
+  subgraph Browser["Browser — React UI (display only)"]
+    UI[Command Center · Reports · Routing · Evacuation · Under the Hood]
+  end
+  subgraph Python["Python backend — all algorithms"]
+    API[FastAPI routes<br/>validation · admin token · rate limit]
+    ENG[FloodWatchEngine]
+    DS[(HashTable<br/>FIFOQueue<br/>MinHeap)]
+    G[Graph + Dijkstra]
+    DB[(SQLite)]
+    WS[WebSocket hub]
+  end
+  UI -- "input: HTTP JSON" --> API --> ENG
+  ENG --> DS
+  ENG --> G
+  ENG --> DB
+  ENG -- "output: state snapshot" --> WS -- live push --> UI

@@ -1,0 +1,7 @@
+flowchart LR
+  A([Resident<br/>reports flood]) --> B["<b>Hash table</b><br/>store by ID<br/>O(1)"]
+  B --> C["<b>FIFO queue</b><br/>await review<br/>O(1)"]
+  C --> D{{"Admin<br/>verifies"}}
+  D --> E["<b>Closed-road set</b><br/>road blocked"]
+  E --> F["<b>Dijkstra + min-heap</b><br/>shortest OPEN route<br/>O((V+E) log V)"]
+  F --> G([Safe route &<br/>shelter advice<br/>live to all users])

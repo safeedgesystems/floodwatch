@@ -1,0 +1,75 @@
+classDiagram
+  direction LR
+  class FloodWatchEngine {
+    -table: HashTable
+    -queue: FIFOQueue~str~
+    -locations: dict
+    -roads: dict
+    -graph: adjacency list
+    -blocked: set~str~
+    +submit_report(location, description, severity, road_id, x, y) dict
+    +process_next() dict
+    +set_status(id, status) dict
+    +delete_report(id)
+    +set_road_block(road_id, blocked) dict
+    +lookup(key) dict
+    +route(start, goal) dict
+    +evacuate(start) dict
+    +resize_hash(size) dict
+    +snapshot() dict
+  }
+  class HashTable {
+    +size: int
+    +buckets: list~list~Entry~~
+    +count: int
+    +sum_key(key)$ int
+    +index(key) int
+    +put(key, value) bool
+    +get(key) probe trace
+    +remove(key) bool
+    +resize(new_size)
+    +stats() dict
+  }
+  class Entry {
+    +key: str
+    +value: Report
+  }
+  class FIFOQueue~T~ {
+    -head: Node
+    -tail: Node
+    -len: int
+    +enqueue(value)
+    +dequeue() T
+    +remove(value) bool
+  }
+  class Node~T~ {
+    +value: T
+    +next: Node
+  }
+  class MinHeap {
+    -items: list~tuple~
+    +pushes: int
+    +pops: int
+    +peak: int
+    +push(priority, value)
+    +pop() tuple
+  }
+  class Graph {
+    <<module graph.py>>
+    +build_graph(locations, roads) dict
+    +dijkstra(graph, blocked, start, goal) dict
+    +connectivity(graph, blocked) float
+  }
+  class Store {
+    <<SQLite>>
+    +upsert_report()
+    +upsert_road()
+    +add_event()
+  }
+  FloodWatchEngine *-- HashTable
+  FloodWatchEngine *-- FIFOQueue
+  FloodWatchEngine ..> Graph : uses
+  FloodWatchEngine --> Store : persists to
+  HashTable *-- "0..*" Entry
+  FIFOQueue *-- "0..*" Node
+  Graph ..> MinHeap : priority queue

@@ -1,0 +1,11 @@
+**/node_modules
+**/__pycache__
+**/.pytest_cache
+.venv
+venv
+.git
+backend/data
+backend/static
+docs/video
+docs/presentation
+*.zip

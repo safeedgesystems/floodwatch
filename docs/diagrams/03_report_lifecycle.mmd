@@ -1,0 +1,10 @@
+stateDiagram-v2
+  direction LR
+  [*] --> Reported: submit<br/>(enqueue at tail)
+  Reported --> Verified: admin verifies<br/>(dequeue · road closes)
+  Verified --> Resolved: water receded<br/>(road reopens)
+  Resolved --> Reported: reopen<br/>(re-enqueue at tail)
+  Reported --> Resolved: dismiss
+  Reported --> [*]: delete
+  Verified --> [*]: delete
+  Resolved --> [*]: delete

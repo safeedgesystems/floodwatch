@@ -1,0 +1,18 @@
+# Render Blueprint — deploys FloodWatch as one Docker web service.
+# Render dashboard → New → Blueprint → pick this repo → Apply.
+services:
+  - type: web
+    name: floodwatch
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free            # free instances sleep after ~15 min idle; first visit then takes ~1 min to wake
+    region: frankfurt     # closest Render region to Ghana
+    healthCheckPath: /api/health
+    autoDeploy: true      # redeploys on every push to the main branch
+    envVars:
+      - key: FLOODWATCH_ADMIN_TOKEN
+        generateValue: true          # random secret; copy it from the service's Environment tab
+      - key: FLOODWATCH_DB
+        value: /data/floodwatch.db   # ephemeral on the free plan (resets to demo data on restart)
+      - key: FLOODWATCH_RATE_LIMIT
+        value: "20"

@@ -1,0 +1,19 @@
+flowchart TD
+  A([Resident sees flooding]) --> B[/Submit report:<br/>location · description · severity · road/]
+  B --> C{Valid input?}
+  C -- No --> C1[Reject with error message] --> B
+  C -- Yes --> D{Known location?}
+  D -- No --> D1[Create map node<br/>link to 2 nearest nodes]
+  D -- Yes --> E
+  D1 --> E[Assign ID FLnnn<br/>HashTable.put ID → report<br/>FIFOQueue.enqueue ID]
+  E --> F[[Admin: Verify next]]
+  F --> G[FIFOQueue.dequeue → oldest ID<br/>HashTable.get ID → report]
+  G --> H[Status = Verified]
+  H --> I{Report names<br/>a road?}
+  I -- Yes --> J[Add road to CLOSED set]
+  I -- No --> K
+  J --> K[Closed = manual closures ∪ roads of Verified reports]
+  K --> L[Dijkstra + MinHeap<br/>shortest OPEN route]
+  K --> M[Evacuation advisor<br/>Dijkstra to every shelter, rank]
+  L --> N([Updated map, routes & advice<br/>pushed live to every user])
+  M --> N

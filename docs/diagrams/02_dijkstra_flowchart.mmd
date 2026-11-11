@@ -1,0 +1,19 @@
+flowchart TD
+  S([Start: source s, goal g, CLOSED set]) --> I1[dist v = ∞ for all v<br/>dist s = 0<br/>heap.push 0, s]
+  I1 --> L{heap empty?}
+  L -- Yes --> NR([dist g = ∞ ⇒ no open route])
+  L -- No --> P[d, u = heap.pop  — smallest distance]
+  P --> ST{d > dist u ?<br/>stale entry}
+  ST -- Yes --> L
+  ST -- No --> SE[Mark u settled]
+  SE --> G{u = g ?}
+  G -- Yes --> R[Walk prev pointers g → s<br/>to rebuild path]
+  R --> OK([Return path, km, ETA, trace])
+  G -- No --> E[For each road u→v]
+  E --> CL{road in CLOSED?}
+  CL -- Yes --> E
+  CL -- No --> RX{d + km < dist v ?}
+  RX -- No --> E
+  RX -- Yes --> UP[dist v = d + km<br/>prev v = u<br/>heap.push dist v, v]
+  UP --> E
+  E -- all edges done --> L
