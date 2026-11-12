@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Shell, View } from "./components/Shell";
+import { HIDDEN_VIEWS, Shell, View } from "./components/Shell";
 import { UiProvider } from "./components/ui";
 import { useLiveState } from "./lib/live";
 import Dashboard from "./views/Dashboard";
@@ -15,7 +15,9 @@ const VIEWS: View[] = ["dashboard", "ghana", "reports", "routing", "evacuation",
 function parse() {
   const [path, qs = ""] = location.hash.replace(/^#/, "").split("?");
   const m = path.match(/^\/app\/(\w+)/);
-  const view = m && VIEWS.includes(m[1] as View) ? (m[1] as View) : null;
+  let view = m && VIEWS.includes(m[1] as View) ? (m[1] as View) : null;
+  // Old links to the hidden simulation views open the Ghana Live Map instead.
+  if (view && HIDDEN_VIEWS.includes(view)) view = "ghana";
   return { view, params: new URLSearchParams(qs) };
 }
 

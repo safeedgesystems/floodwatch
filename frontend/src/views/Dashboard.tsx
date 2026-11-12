@@ -43,9 +43,9 @@ export default function Dashboard() {
           <span><i className="lg lg-med" />Medium</span><span><i className="lg lg-low" />Low</span><span><i className="lg lg-shelter" />Shelter</span>
         </div>}>
         <NetworkMap state={state} showShelters height={460}
-          onNodeClick={(id) => go("routing", { from: id })}
+          onNodeClick={() => go("ghana")}
           onRoadClick={isAdmin ? toggleRoad : undefined} />
-        <p className="hint">Click a location to plan a route from it{isAdmin ? " · click a road to close or reopen it" : ""}.</p>
+        <p className="hint">Click a location to plan a real route on the Ghana Live Map{isAdmin ? " · click a road to close or reopen it" : ""}.</p>
       </Panel>
 
       <Panel className="dash-feed" title="Activity" icon={<Activity size={16} />}>
@@ -63,7 +63,7 @@ export default function Dashboard() {
         {hotspots.length === 0 ? <Empty icon={<CheckCircle2 />} title="No risk detected" body="Every location is currently safe." /> : (
           <ul className="hotspots">
             {hotspots.map((l) => (
-              <li key={l.id} onClick={() => go("evacuation", { from: l.id })}>
+              <li key={l.id} onClick={() => go("ghana", { tab: "evacuate" })}>
                 <div className="hs-name"><strong>{l.name}</strong><span className="mono muted">{l.id}</span></div>
                 <div className="hs-meter"><i className={`risk-bg-${l.risk.toLowerCase()}`} style={{ width: `${Math.min(100, l.riskScore * 14)}%` }} /></div>
                 <RiskBadge r={l.risk} />

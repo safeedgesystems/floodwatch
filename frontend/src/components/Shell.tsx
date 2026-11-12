@@ -29,7 +29,12 @@ export function Logo({ compact = false }: { compact?: boolean }) {
   );
 }
 
-const NAV: { id: View; label: string; icon: ReactNode }[] = [
+// The simulation-city Routing and Evacuation views are hidden: routing and
+// evacuation are done on the Ghana Live Map. Set to true to bring them back.
+export const SHOW_SIM_VIEWS = false;
+export const HIDDEN_VIEWS: View[] = SHOW_SIM_VIEWS ? [] : ["routing", "evacuation"];
+
+const ALL_NAV: { id: View; label: string; icon: ReactNode }[] = [
   { id: "dashboard", label: "Command Center", icon: <LayoutDashboard size={18} /> },
   { id: "ghana", label: "Ghana Live Map", icon: <MapIcon size={18} /> },
   { id: "reports", label: "Reports & Queue", icon: <ListChecks size={18} /> },
@@ -37,6 +42,7 @@ const NAV: { id: View; label: string; icon: ReactNode }[] = [
   { id: "evacuation", label: "Sim · Evacuation", icon: <LifeBuoy size={18} /> },
   { id: "internals", label: "Under the Hood", icon: <Binary size={18} /> },
 ];
+const NAV = ALL_NAV.filter((n) => !HIDDEN_VIEWS.includes(n.id));
 
 const TITLES: Record<View, [string, string]> = {
   dashboard: ["Command Center", "Live situational picture across the network"],
